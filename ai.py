@@ -1,5 +1,11 @@
+# ==============================
+# ai.py
+# ==============================
+
+import os
 import requests
-from config import GROQ_API_KEY
+
+GROQ_API_KEY = os.getenv("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")
 
 def get_ai_reply(prompt):
     response = requests.post(
@@ -13,4 +19,5 @@ def get_ai_reply(prompt):
             "messages": [{"role": "user", "content": prompt}]
         }
     )
+
     return response.json()["choices"][0]["message"]["content"]

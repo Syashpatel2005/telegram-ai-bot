@@ -1,9 +1,12 @@
+# ==============================
+# db.py
+# ==============================
+
 import sqlite3
 
 conn = sqlite3.connect("users.db", check_same_thread=False)
 cur = conn.cursor()
 
-# Create table
 cur.execute("""
 CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY,
@@ -38,10 +41,7 @@ def increment_count(user_id):
     conn.commit()
 
 
-# ================================
-# STEP 8: FREE vs PAID LOGIC
-# ================================
 def can_user_chat(user):
-    if user[1] == 1:   # Premium user
+    if user[1] == 1:  # premium
         return True
-    return user[2] < 10   # Free user limit
+    return user[2] < 10  # free limit

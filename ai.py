@@ -5,7 +5,7 @@
 import os
 import requests
 
-GROQ_API_KEY = os.getenv("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")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 def get_ai_reply(prompt):
     response = requests.post(
@@ -21,3 +21,4 @@ def get_ai_reply(prompt):
     )
 
     return response.json()["choices"][0]["message"]["content"]
+

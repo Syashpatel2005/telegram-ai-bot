@@ -1,6 +1,8 @@
 # ==============================
-# Imports
+# bot.py
 # ==============================
+
+import os
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder,
@@ -10,15 +12,16 @@ from telegram.ext import (
     ContextTypes
 )
 
-from config import BOT_TOKEN, ADMIN_ID
 from ai import get_ai_reply
 from db import add_user, get_user, increment_count, can_user_chat
 from payments import get_payment_message, make_user_premium
 
+# Environment variables
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+ADMIN_ID = int(os.getenv("ADMIN_ID"))
 
-# ==============================
+
 # /start command
-# ==============================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     add_user(update.effective_user.id)
     await update.message.reply_text(
@@ -29,9 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ==============================
 # /premium command
-# ==============================
 async def premium(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         get_payment_message(),
@@ -39,12 +40,10 @@ async def premium(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-# ==============================
-# Admin: make user premium
-# ==============================
+# Admin command to upgrade user
 async def makepremium(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.effective_user.id != ADMIN_ID:
-        await update.message.reply_text("❌ You are not authorized.")
+        await update.message.reply_text("❌ Unauthorized")
         return
 
     try:
@@ -52,14 +51,10 @@ async def makepremium(update: Update, context: ContextTypes.DEFAULT_TYPE):
         make_user_premium(user_id)
         await update.message.reply_text("✅ User upgraded to Premium")
     except:
-        await update.message.reply_text(
-            "❌ Usage:\n/makepremium USER_ID"
-        )
+        await update.message.reply_text("❌ Usage: /makepremium USER_ID")
 
 
-# ==============================
 # Chat handler
-# ==============================
 async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     user = get_user(user_id)
@@ -75,9 +70,7 @@ async def chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(reply)
 
 
-# ==============================
-# Bot start
-# ==============================
+# Start bot
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 

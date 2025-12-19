@@ -17,8 +17,8 @@ from db import add_user, get_user, increment_count, can_user_chat
 from payments import get_payment_message, make_user_premium
 
 # Environment variables
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-ADMIN_ID = int(os.getenv("ADMIN_ID"))
+BOT_TOKEN = os.getenv("8305255365:AAGfsDYXSmU_UCNHQqzbcQtjX_Kqodh3fWA")
+ADMIN_ID = int(os.getenv("5737167602"))
 
 
 # /start command
@@ -85,3 +85,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
